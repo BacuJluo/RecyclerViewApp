@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class SocialNetworkFragment extends Fragment {
+public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
 
 
     SocialNetworkAdapter socialNetworkAdapter;
@@ -49,6 +51,8 @@ public class SocialNetworkFragment extends Fragment {
     private void initAdapter() {
         socialNetworkAdapter = new SocialNetworkAdapter();
         socialNetworkAdapter.setData(getData());
+        socialNetworkAdapter.setOnItemClickListener(this);
+
     }
 
     void initRecycler(View view){
@@ -62,5 +66,12 @@ public class SocialNetworkFragment extends Fragment {
     String[] getData() {
         String[] data = getResources().getStringArray(R.array.titles);
         return data;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        String[] data = getData();
+        Toast.makeText(requireContext(), " Нажали на" + data[position], Toast.LENGTH_SHORT).show();
+
     }
 }
