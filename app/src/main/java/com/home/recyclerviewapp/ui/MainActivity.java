@@ -1,8 +1,10 @@
-package com.home.recyclerviewapp;
+package com.home.recyclerviewapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.home.recyclerviewapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

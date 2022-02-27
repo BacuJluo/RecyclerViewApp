@@ -1,4 +1,4 @@
-package com.home.recyclerviewapp;
+package com.home.recyclerviewapp.ui;
 
 import android.os.Bundle;
 
@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
+import com.home.recyclerviewapp.R;
+import com.home.recyclerviewapp.repository.LocalRepositoryImplementation;
 
+public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
 
     SocialNetworkAdapter socialNetworkAdapter;
 
@@ -25,7 +25,6 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         SocialNetworkFragment fragment = new SocialNetworkFragment();
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +49,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
 
     private void initAdapter() {
         socialNetworkAdapter = new SocialNetworkAdapter();
-        socialNetworkAdapter.setData(getData());
+        LocalRepositoryImplementation localRepositoryImplementation = new LocalRepositoryImplementation(requireContext().getResources());
+        socialNetworkAdapter.setData(localRepositoryImplementation.init());
         socialNetworkAdapter.setOnItemClickListener(this);
 
     }
@@ -63,7 +63,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         recyclerView.setAdapter(socialNetworkAdapter);
     }
 
-    String[] getData() {
+    public String[] getData() {
         String[] data = getResources().getStringArray(R.array.titles);
         return data;
     }
@@ -72,6 +72,5 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     public void onItemClick(int position) {
         String[] data = getData();
         Toast.makeText(requireContext(), " Нажали на" + data[position], Toast.LENGTH_SHORT).show();
-
     }
 }
