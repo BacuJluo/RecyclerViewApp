@@ -20,14 +20,16 @@
         <item>@string/description7</item>
     </string-array>
 
-    <array name="pictures">
-        <item>@drawable/nature1</item>
-        <item>@drawable/nature2</item>
-        <item>@drawable/nature3</item>
-        <item>@drawable/nature4</item>
-        <item>@drawable/nature5</item>
-        <item>@drawable/nature6</item>
-        <item>@drawable/nature7</item>
+    <array name="colors">
+        <item>@color/teal_700</item>
+        <item>@color/purple_200</item>
+        <item>@color/purple_500</item>
+        <item>@color/purple_700</item>
+        <item>@color/teal_200</item>
+        <item>@color/dark_yellow</item>
+        <item>@color/yellow</item>
     </array>
+
+
 
 </resources>

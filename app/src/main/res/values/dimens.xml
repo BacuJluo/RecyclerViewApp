@@ -2,7 +2,7 @@
 <resources>
     <dimen name="sizeItemList">18sp</dimen>
 
-    <dimen name="textDescription">20sp</dimen>
-    <dimen name="textTitle">42sp</dimen>
-    <dimen name="heightImage">200dp</dimen>
+    <dimen name="textDescription">15sp</dimen>
+    <dimen name="textTitle">27sp</dimen>
+    <dimen name="heightImage">150dp</dimen>
 </resources>

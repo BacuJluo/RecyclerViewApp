@@ -5,13 +5,13 @@ import java.util.SplittableRandom;
 public class CardData {
     private String title;
     private String description;
-    private int picture;
+    private int colors;
     private boolean like;
 
-    public CardData(String title, String description, int picture, boolean like) {
+    public CardData(String title, String description, int color, boolean like) {
         this.title = title;
         this.description = description;
-        this.picture = picture;
+        this.colors = color;
         this.like = like;
     }
 
@@ -23,8 +23,8 @@ public class CardData {
         return description;
     }
 
-    public int getPicture() {
-        return picture;
+    public int getColors() {
+        return colors;
     }
 
     public boolean isLike() {

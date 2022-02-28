@@ -21,10 +21,10 @@ public class LocalRepositoryImplementation implements CardSource{
     public LocalRepositoryImplementation init(){
         String[] titles = resources.getStringArray(R.array.titles); //список заголовков
         String[] description = resources.getStringArray(R.array.descriptions);//массив описания
-        TypedArray pictures = resources.obtainTypedArray(R.array.pictures);//список картинок
+        TypedArray colors = resources.obtainTypedArray(R.array.colors);//список цветов
 
         for (int i = 0;i< titles.length;i++){
-            dataSource.add(new CardData(titles[i],description[i], pictures.getResourceId(i,0),false));
+            dataSource.add(new CardData(titles[i],description[i], colors.getResourceId(i,0),false));
         }
         return this;
     }
