@@ -1,25 +1,14 @@
 package com.home.recyclerviewapp.ui;
 
-import android.graphics.Color;
-import android.text.style.BackgroundColorSpan;
+
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-import android.widget.Toolbar;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.home.recyclerviewapp.R;
@@ -71,14 +60,12 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         private TextView textViewTitle;
         private TextView textViewDescription;
         private ToggleButton like;
-        private LinearLayout colors;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.title);
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
             like = (ToggleButton) itemView.findViewById(R.id.like);
-            colors = (LinearLayout) itemView.findViewById(R.id.colorsLayout);
 
         }
         //связываем контент с макетом
@@ -86,7 +73,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription());
             like.setChecked(content.isLike());
-            colors.setBackgroundColor(content.getColors());
+            textViewDescription.setBackgroundResource(content.getColors());
         }
     }
 
