@@ -1,10 +1,17 @@
 package com.home.recyclerviewapp.ui;
 
 
+import static android.view.View.inflate;
+
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -57,15 +64,15 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
     //класс который более нигде не будет использоваться его можно делать внутри другого класса.
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView textViewTitle;
-        private TextView textViewDescription;
+        private EditText textViewTitle;
+        private EditText textViewDescription;
         private ToggleButton like;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle = (TextView) itemView.findViewById(R.id.title);
-            textViewDescription = (TextView) itemView.findViewById(R.id.description);
-            like = (ToggleButton) itemView.findViewById(R.id.like);
+            textViewTitle =  itemView.findViewById(R.id.title);
+            textViewDescription =  itemView.findViewById(R.id.description);
+            like =  itemView.findViewById(R.id.like);
 
         }
         //связываем контент с макетом
@@ -74,7 +81,10 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             textViewDescription.setText(content.getDescription());
             like.setChecked(content.isLike());
             textViewDescription.setBackgroundResource(content.getColors());
+
         }
+
+
     }
 
 

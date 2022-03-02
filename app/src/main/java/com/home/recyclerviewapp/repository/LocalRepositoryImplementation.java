@@ -43,4 +43,5 @@ public class LocalRepositoryImplementation implements CardSource{
     public CardData getCardData(int position) {
         return dataSource.get(position);
     }
+
 }
