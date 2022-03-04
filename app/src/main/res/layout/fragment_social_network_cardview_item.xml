@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
+        <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,14 +46,8 @@
                 android:textOff=""
                 android:textOn=""/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonEdit"
-                android:background="@drawable/my_ic_edit"
-                android:layout_gravity="center"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

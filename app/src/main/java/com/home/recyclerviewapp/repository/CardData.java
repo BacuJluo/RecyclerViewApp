@@ -1,6 +1,5 @@
 package com.home.recyclerviewapp.repository;
 
-import java.util.SplittableRandom;
 
 public class CardData {
     private String title;

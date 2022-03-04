@@ -8,7 +8,7 @@ import com.home.recyclerviewapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalRepositoryImplementation implements CardSource{
+public class LocalRepositoryImplementation implements CardsSource {
 
     private List<CardData> dataSource;
     private Resources resources;
@@ -42,6 +42,26 @@ public class LocalRepositoryImplementation implements CardSource{
     @Override
     public CardData getCardData(int position) {
         return dataSource.get(position);
+    }
+
+    @Override
+    public void clearCardsData() {
+        dataSource.clear();
+    }
+
+    @Override
+    public void addCardData(CardData cardData) {
+        dataSource.add(cardData);
+    }
+
+    @Override
+    public void deleteCardData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateCardData(int position, CardData newCardData) {
+        dataSource.set(position, newCardData);
     }
 
 }

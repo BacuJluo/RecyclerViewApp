@@ -1,17 +1,9 @@
 package com.home.recyclerviewapp.ui;
 
 
-import static android.view.View.inflate;
-
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -20,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.repository.CardData;
-import com.home.recyclerviewapp.repository.CardSource;
+import com.home.recyclerviewapp.repository.CardsSource;
 
 public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdapter.MyViewHolder> {
 
-    private CardSource cardSource;
+    private CardsSource cardsSource;
 
     OnItemClickListener onItemClickListener;
 
@@ -32,13 +24,13 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(CardSource cardSource) {
-        this.cardSource = cardSource;
+    public void setData(CardsSource cardsSource) {
+        this.cardsSource = cardsSource;
         notifyDataSetChanged(); //команда адаптеру отрисовать все (абсолютно все) полученные данные
     }
 
-    SocialNetworkAdapter(CardSource cardSource) {
-        this.cardSource = cardSource;
+    SocialNetworkAdapter(CardsSource cardsSource) {
+        this.cardsSource = cardsSource;
     }
 
     SocialNetworkAdapter() {
@@ -53,19 +45,19 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bindContentWithLayout(cardSource.getCardData(position));
+        holder.bindContentWithLayout(cardsSource.getCardData(position));
     }
 
     @Override
     public int getItemCount() {
-        return cardSource.size();
+        return cardsSource.size();
     }
 
     //класс который более нигде не будет использоваться его можно делать внутри другого класса.
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private EditText textViewTitle;
-        private EditText textViewDescription;
+        private TextView textViewTitle;
+        private TextView textViewDescription;
         private ToggleButton like;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -73,7 +65,6 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             textViewTitle =  itemView.findViewById(R.id.title);
             textViewDescription =  itemView.findViewById(R.id.description);
             like =  itemView.findViewById(R.id.like);
-
         }
         //связываем контент с макетом
         public void bindContentWithLayout(CardData content){
@@ -81,7 +72,6 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             textViewDescription.setText(content.getDescription());
             like.setChecked(content.isLike());
             textViewDescription.setBackgroundResource(content.getColors());
-
         }
 
 
