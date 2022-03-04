@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.home.recyclerviewapp.R;
@@ -20,6 +21,14 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
 
     OnItemClickListener onItemClickListener;
 
+    Fragment fragment;
+
+    private int menuPosition;
+
+    public int getMenuPosition() {
+        return menuPosition;
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -29,12 +38,14 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         notifyDataSetChanged(); //команда адаптеру отрисовать все (абсолютно все) полученные данные
     }
 
+    SocialNetworkAdapter() {
+
+    }
     SocialNetworkAdapter(CardsSource cardsSource) {
         this.cardsSource = cardsSource;
     }
-
-    SocialNetworkAdapter() {
-
+    SocialNetworkAdapter(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -56,15 +67,29 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
     //класс который более нигде не будет использоваться его можно делать внутри другого класса.
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView textViewTitle;
-        private TextView textViewDescription;
-        private ToggleButton like;
+        private final TextView textViewTitle;
+        private final TextView textViewDescription;
+        private final ToggleButton like;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle =  itemView.findViewById(R.id.title);
             textViewDescription =  itemView.findViewById(R.id.description);
             like =  itemView.findViewById(R.id.like);
+            fragment.registerForContextMenu(itemView);
+
+
+//          нужно было найти menuPosition, поэтому пришлось пользоваться itemView и делать для него кликЛистенер
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    menuPosition = getLayoutPosition();
+                    return false;
+            //по умолчанию идет True..
+            //когда выбираем клик по itemView нужно заменять на false..
+                }
+            });
+
         }
         //связываем контент с макетом
         public void bindContentWithLayout(CardData content){

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,16 +47,14 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.cards_menu, menu );
         super.onCreateOptionsMenu(menu, inflater);
-
     }
 
-    @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
                 data.addCardData(new CardData("Заголовок новой карточки "+(data.size()+1),
-                        "Описание новой карточки "+(data.size()+1), R.color.yellow, false));
+                        "Описание новой карточки "+(data.size()+1), data.getCardData(socialNetworkAdapter.getMenuPosition()).getColors(), false));
                 socialNetworkAdapter.notifyItemInserted(data.size()-1);
                 return true;
             }
@@ -69,22 +68,40 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     }
 
     @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        requireActivity().getMenuInflater().inflate(R.menu.card_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int menuPosition = socialNetworkAdapter.getMenuPosition(); //получаем menuPosition из адаптера
+        switch (item.getItemId()){
+            case (R.id.action_update):{
+                data.updateCardData(menuPosition, new CardData("Заголовок новой карточки "+(data.size()+1),
+                        "Описание новой карточки "+(data.size()+1), data.getCardData(menuPosition).getColors(), false));
+                return true;
+            }
+            case (R.id.action_delede):{
+                data.deleteCardData(menuPosition);
+                socialNetworkAdapter.notifyItemRemoved(menuPosition);
+                return true;
+            }
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initAdapter();
         initRecycler(view);
         setHasOptionsMenu(true);
 
-
-        //Для того чтобы работал наш RecyclerView нужно сделать 3 вещи
-        //1.найти его в макете
-        //2.прописать его ЛаяутМэнеджер 41 строка.
-        //3.связать его со своим адаптером
-        // и в адаптере должны быть данные.
     }
 
     private void initAdapter() {
-        socialNetworkAdapter = new SocialNetworkAdapter();
+        socialNetworkAdapter = new SocialNetworkAdapter(this);
         data = new LocalRepositoryImplementation(requireContext().getResources()).init();
         socialNetworkAdapter.setData(data);
         socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
