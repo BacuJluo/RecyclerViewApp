@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
 
     SocialNetworkAdapter socialNetworkAdapter;
     CardsSource data;
+    RecyclerView recyclerView;
 
     public static SocialNetworkFragment newInstance() {
         SocialNetworkFragment fragment = new SocialNetworkFragment();
@@ -56,6 +58,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 data.addCardData(new CardData("Заголовок новой карточки "+(data.size()+1),
                         "Описание новой карточки "+(data.size()+1), data.getCardData(socialNetworkAdapter.getMenuPosition()).getColors(), false));
                 socialNetworkAdapter.notifyItemInserted(data.size()-1);
+                recyclerView.smoothScrollToPosition(data.size()-1);
+                //recyclerView.scrollToPosition(data.size()-1); //Почему-то не работает(!)
                 return true;
             }
             case (R.id.action_clear):{
@@ -80,6 +84,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
             case (R.id.action_update):{
                 data.updateCardData(menuPosition, new CardData("Заголовок новой карточки "+(data.size()+1),
                         "Описание новой карточки "+(data.size()+1), data.getCardData(menuPosition).getColors(), false));
+                socialNetworkAdapter.notifyItemChanged(menuPosition);
                 return true;
             }
             case (R.id.action_delede):{
@@ -109,11 +114,17 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     }
 
     void initRecycler(View view){
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager); //задали LinearLayoutManager
         recyclerView.setHasFixedSize(true); //мы можем указать эту команду recyclerView что у него все элементы фиксированного размера и это ускорит работу inflater'a по надуванию нашего макета, и он не будет измерять каждый элемент, и это ускорит его работу.
         recyclerView.setAdapter(socialNetworkAdapter);
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setChangeDuration(5000);
+        animator.setRemoveDuration(5000);
+        recyclerView.setItemAnimator(animator);
+
     }
 
     public String[] getData() {

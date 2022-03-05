@@ -84,7 +84,8 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
                 @Override
                 public boolean onLongClick(View v) {
                     menuPosition = getLayoutPosition();
-                    return false;
+                    //v.showContextMenu(); //для отображения как контекстное Меню.
+                    return true;
             //по умолчанию идет True..
             //когда выбираем клик по itemView нужно заменять на false..
                 }
