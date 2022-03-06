@@ -97,7 +97,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription());
             like.setChecked(content.isLike());
-            textViewDescription.setBackgroundResource(content.getColors());
+            textViewTitle.setBackgroundResource(content.getColors());
         }
 
 

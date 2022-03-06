@@ -25,5 +25,8 @@
     <string name="delete">Удалить</string>
     <string name="save">Save</string>
     <string name="edit">Редактировать</string>
+    <string name="title_note">Заголовок</string>
+    <string name="description_note">Описание</string>
+    <string name="save_button">Сохранить</string>
 
 </resources>

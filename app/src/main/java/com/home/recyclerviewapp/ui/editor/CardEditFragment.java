@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.repository.CardData;
@@ -18,6 +20,7 @@ import com.home.recyclerviewapp.ui.MainActivity;
 public class CardEditFragment extends Fragment {
 
     CardData cardData;
+    private DatePicker datePicker;
 
     public static CardEditFragment newInstance(CardData cardData) {
         CardEditFragment fragment = new CardEditFragment();
@@ -40,12 +43,23 @@ public class CardEditFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null){
             cardData = getArguments().getParcelable("cardData");
-
+            ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getTitle());
+            ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getDescription());
 
             //Передаем сообщение Паблишеру что мы изменили карточку
-            ((MainActivity) requireActivity()).getPublisher().sendMessage(cardData);
-            //Говорим фрагментМенеджеру
-            ((MainActivity)requireActivity()).getSupportFragmentManager().popBackStack();
+
+            view.findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cardData.setTitle(((EditText)view.findViewById(R.id.inputTitle)).getText().toString());
+                    cardData.setDescription(((EditText)view.findViewById(R.id.inputDescription)).getText().toString());
+                    //Передаем сообщение Паблишеру что мы изменили карточку
+                    ((MainActivity) requireActivity()).getPublisher().sendMessage(cardData);
+                    //Закрываем фрагмент менеджер и сохраняем результат
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
         }
+
     }
 }

@@ -91,8 +91,6 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                     public void receiveMessage(CardData cardData) {
                         ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
                         cardData.setLike(true);
-                        cardData.setTitle("test");
-                        cardData.setDescription("test2");
                         data.updateCardData(menuPosition,cardData);
                         socialNetworkAdapter.notifyItemChanged(menuPosition);
                     }

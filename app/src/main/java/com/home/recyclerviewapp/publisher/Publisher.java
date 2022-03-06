@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //Создаем слушателя который будет получать и передавать данные тем кто на него подписан(использует его)
+//(!)Передача данных между фрагментами через слушатель.
 
 public class Publisher {
     private List<Observer> observers;
