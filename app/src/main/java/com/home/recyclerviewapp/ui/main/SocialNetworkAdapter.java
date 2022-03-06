@@ -1,4 +1,4 @@
-package com.home.recyclerviewapp.ui;
+package com.home.recyclerviewapp.ui.main;
 
 
 import android.view.LayoutInflater;
@@ -84,7 +84,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
                 @Override
                 public boolean onLongClick(View v) {
                     menuPosition = getLayoutPosition();
-                    //v.showContextMenu(); //для отображения как контекстное Меню.
+                    v.showContextMenu(); //для отображения как контекстное Меню. И ставим значение true для отображения
                     return true;
             //по умолчанию идет True..
             //когда выбираем клик по itemView нужно заменять на false..

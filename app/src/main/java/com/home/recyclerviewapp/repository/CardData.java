@@ -1,17 +1,76 @@
 package com.home.recyclerviewapp.repository;
 
 
-public class CardData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.Date;
+
+//Добавили парселизацию и Date
+public class CardData implements Parcelable {
     private String title;
     private String description;
     private int colors;
     private boolean like;
+    private Date date;
 
-    public CardData(String title, String description, int color, boolean like) {
+    protected CardData(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        colors = in.readInt();
+        like = in.readByte() != 0;
+        date = new Date(in.readLong());
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeInt(colors);
+        dest.writeByte((byte) (like ? 1 : 0));
+        dest.writeLong(date.getTime());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<CardData> CREATOR = new Creator<CardData>() {
+        @Override
+        public CardData createFromParcel(Parcel in) {
+            return new CardData(in);
+        }
+
+        @Override
+        public CardData[] newArray(int size) {
+            return new CardData[size];
+        }
+    };
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+    public CardData(String title, String description, int color, boolean like, Date date) {
         this.title = title;
         this.description = description;
         this.colors = color;
         this.like = like;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -33,4 +92,6 @@ public class CardData {
     public void setLike(boolean like) {
         this.like = like;
     }
+
+
 }

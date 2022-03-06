@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import com.home.recyclerviewapp.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class LocalRepositoryImplementation implements CardsSource {
@@ -24,7 +25,7 @@ public class LocalRepositoryImplementation implements CardsSource {
         TypedArray colors = resources.obtainTypedArray(R.array.colors);//список цветов
 
         for (int i = 0;i< titles.length;i++){
-            dataSource.add(new CardData(titles[i],description[i], colors.getResourceId(i,0),false));
+            dataSource.add(new CardData(titles[i],description[i], colors.getResourceId(i,0),false, Calendar.getInstance().getTime()));
         }
         return this;
     }

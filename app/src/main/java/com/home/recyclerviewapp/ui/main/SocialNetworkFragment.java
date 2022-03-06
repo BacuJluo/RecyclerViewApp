@@ -1,7 +1,5 @@
-package com.home.recyclerviewapp.ui;
+package com.home.recyclerviewapp.ui.main;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,14 +16,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.home.recyclerviewapp.R;
+import com.home.recyclerviewapp.publisher.Observer;
 import com.home.recyclerviewapp.repository.CardData;
 import com.home.recyclerviewapp.repository.CardsSource;
 import com.home.recyclerviewapp.repository.LocalRepositoryImplementation;
+import com.home.recyclerviewapp.ui.MainActivity;
+import com.home.recyclerviewapp.ui.editor.CardEditFragment;
+
+import java.util.Calendar;
 
 public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
 
@@ -56,7 +57,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         switch (item.getItemId()){
             case (R.id.action_add):{
                 data.addCardData(new CardData("Заголовок новой карточки "+(data.size()+1),
-                        "Описание новой карточки "+(data.size()+1), data.getCardData(socialNetworkAdapter.getMenuPosition()).getColors(), false));
+                        "Описание новой карточки "+(data.size()+1), data.getCardData(socialNetworkAdapter
+                        .getMenuPosition()).getColors(), false, Calendar.getInstance().getTime()));
                 socialNetworkAdapter.notifyItemInserted(data.size()-1);
                 recyclerView.smoothScrollToPosition(data.size()-1);
                 //recyclerView.scrollToPosition(data.size()-1); //Почему-то не работает(!)
@@ -82,12 +84,25 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         int menuPosition = socialNetworkAdapter.getMenuPosition(); //получаем menuPosition из адаптера
         switch (item.getItemId()){
             case (R.id.action_update):{
-                data.updateCardData(menuPosition, new CardData("Заголовок новой карточки "+(data.size()+1),
-                        "Описание новой карточки "+(data.size()+1), data.getCardData(menuPosition).getColors(), false));
-                socialNetworkAdapter.notifyItemChanged(menuPosition);
+
+                //Создаем Колбэк
+                Observer observer = new Observer() {
+                    @Override
+                    public void receiveMessage(CardData cardData) {
+                        ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
+                        cardData.setLike(true);
+                        cardData.setTitle("test");
+                        cardData.setDescription("test2");
+                        data.updateCardData(menuPosition,cardData);
+                        socialNetworkAdapter.notifyItemChanged(menuPosition);
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                ((MainActivity) requireActivity()).getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, CardEditFragment.newInstance(data.getCardData(menuPosition))).addToBackStack("").commit();
                 return true;
             }
-            case (R.id.action_delede):{
+            case (R.id.action_delete):{
                 data.deleteCardData(menuPosition);
                 socialNetworkAdapter.notifyItemRemoved(menuPosition);
                 return true;
@@ -120,6 +135,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         recyclerView.setHasFixedSize(true); //мы можем указать эту команду recyclerView что у него все элементы фиксированного размера и это ускорит работу inflater'a по надуванию нашего макета, и он не будет измерять каждый элемент, и это ускорит его работу.
         recyclerView.setAdapter(socialNetworkAdapter);
 
+        //Поверхностная работа с Animator
         DefaultItemAnimator animator = new DefaultItemAnimator();
         animator.setChangeDuration(5000);
         animator.setRemoveDuration(5000);
@@ -137,5 +153,6 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         String[] data = getData();
         Toast.makeText(requireContext(), " Нажали на" + data[position], Toast.LENGTH_SHORT).show();
     }
+
 
 }
