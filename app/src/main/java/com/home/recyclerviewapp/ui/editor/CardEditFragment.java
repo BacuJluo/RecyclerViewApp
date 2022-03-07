@@ -1,5 +1,6 @@
 package com.home.recyclerviewapp.ui.editor;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,14 @@ import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.repository.CardData;
 import com.home.recyclerviewapp.ui.MainActivity;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class CardEditFragment extends Fragment {
 
     CardData cardData;
-    private DatePicker datePicker;
 
     public static CardEditFragment newInstance(CardData cardData) {
         CardEditFragment fragment = new CardEditFragment();
@@ -46,20 +50,51 @@ public class CardEditFragment extends Fragment {
             ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getTitle());
             ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getDescription());
 
-            //Передаем сообщение Паблишеру что мы изменили карточку
+            //Создаем ДатаПикер
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(cardData.getDate());
+            calendar.setTime(cardData.getDate());
+            ((DatePicker) view.findViewById(R.id.inputDate)).init(calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH+1),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                ((DatePicker) view.findViewById(R.id.inputDate)).setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+                    @Override
+                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                           calendar.set(Calendar.YEAR,year);
+                           calendar.set(Calendar.MONTH,monthOfYear);
+                           calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                    }
+                });
+            }
+
 
             view.findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     cardData.setTitle(((EditText)view.findViewById(R.id.inputTitle)).getText().toString());
                     cardData.setDescription(((EditText)view.findViewById(R.id.inputDescription)).getText().toString());
+
+//Старый метод использования DataPicker
+//Задаем год, месяц, день
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+                        DatePicker datePicker = view.findViewById(R.id.inputDate);
+                        calendar.set(Calendar.YEAR,datePicker.getYear());
+                        calendar.set(Calendar.MONTH,datePicker.getMonth());
+                        calendar.set(Calendar.DAY_OF_MONTH,datePicker.getDayOfMonth());
+                    }
+
+                    cardData.setDate(calendar.getTime());
                     //Передаем сообщение Паблишеру что мы изменили карточку
                     ((MainActivity) requireActivity()).getPublisher().sendMessage(cardData);
                     //Закрываем фрагмент менеджер и сохраняем результат
                     requireActivity().getSupportFragmentManager().popBackStack();
                 }
             });
+
         }
 
     }
+
 }

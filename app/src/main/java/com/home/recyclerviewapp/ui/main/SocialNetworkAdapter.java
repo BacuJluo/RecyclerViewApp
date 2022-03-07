@@ -95,7 +95,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         //связываем контент с макетом
         public void bindContentWithLayout(CardData content){
             textViewTitle.setText(content.getTitle());
-            textViewDescription.setText(content.getDescription());
+            textViewDescription.setText(content.getDescription()+"\n\n"+content.getDate());
             like.setChecked(content.isLike());
             textViewTitle.setBackgroundResource(content.getColors());
         }

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
+
 //Добавили парселизацию и Date
 public class CardData implements Parcelable {
     private String title;
@@ -60,11 +61,6 @@ public class CardData implements Parcelable {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-
     public CardData(String title, String description, int color, boolean like, Date date) {
         this.title = title;
         this.description = description;
@@ -93,5 +89,7 @@ public class CardData implements Parcelable {
         this.like = like;
     }
 
-
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
