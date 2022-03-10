@@ -1,7 +1,7 @@
 package com.home.recyclerviewapp.publisher;
 
-import com.home.recyclerviewapp.repository.CardData;
+import com.home.recyclerviewapp.repository.NoteData;
 
 public interface Observer {
-    void receiveMessage(CardData cardData);
+    void receiveMessage(NoteData noteData);
 }

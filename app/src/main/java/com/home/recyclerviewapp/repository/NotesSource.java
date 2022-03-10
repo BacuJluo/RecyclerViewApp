@@ -2,17 +2,17 @@ package com.home.recyclerviewapp.repository;
 
 import java.util.List;
 
-public interface CardsSource {
+public interface NotesSource {
     int size();
-    List<CardData> getAllCardsData();
-    CardData getCardData(int position);
+    List<NoteData> getAllCardsData();
+    NoteData getCardData(int position);
 
     //1. добавили новые методы (очистка карточки, добавление, удаление, обновление карточки)
     void clearCardsData();
-    void addCardData(CardData cardData);
+    void addCardData(NoteData noteData);
 
     void deleteCardData(int position);
-    void updateCardData(int position, CardData cardData);
+    void updateCardData(int position, NoteData noteData);
 
     //2.
 }

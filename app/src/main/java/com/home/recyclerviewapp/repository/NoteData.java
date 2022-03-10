@@ -8,14 +8,14 @@ import java.util.Date;
 
 
 //Добавили парселизацию и Date
-public class CardData implements Parcelable {
+public class NoteData implements Parcelable {
     private String title;
     private String description;
     private int colors;
     private boolean like;
     private Date date;
 
-    protected CardData(Parcel in) {
+    protected NoteData(Parcel in) {
         title = in.readString();
         description = in.readString();
         colors = in.readInt();
@@ -45,15 +45,15 @@ public class CardData implements Parcelable {
         return 0;
     }
 
-    public static final Creator<CardData> CREATOR = new Creator<CardData>() {
+    public static final Creator<NoteData> CREATOR = new Creator<NoteData>() {
         @Override
-        public CardData createFromParcel(Parcel in) {
-            return new CardData(in);
+        public NoteData createFromParcel(Parcel in) {
+            return new NoteData(in);
         }
 
         @Override
-        public CardData[] newArray(int size) {
-            return new CardData[size];
+        public NoteData[] newArray(int size) {
+            return new NoteData[size];
         }
     };
 
@@ -61,7 +61,7 @@ public class CardData implements Parcelable {
         return date;
     }
 
-    public CardData(String title, String description, int color, boolean like, Date date) {
+    public NoteData(String title, String description, int color, boolean like, Date date) {
         this.title = title;
         this.description = description;
         this.colors = color;

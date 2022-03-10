@@ -5,18 +5,17 @@ import android.content.res.TypedArray;
 
 import com.home.recyclerviewapp.R;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class LocalRepositoryImplementation implements CardsSource {
+public class LocalRepositoryImplementation implements NotesSource {
 
-    private List<CardData> dataSource;
+    private List<NoteData> dataSource;
     private Resources resources;
 
     public LocalRepositoryImplementation(Resources resources){
-        dataSource = new ArrayList<CardData>();
+        dataSource = new ArrayList<NoteData>();
         this.resources = resources;
     }
 
@@ -26,7 +25,7 @@ public class LocalRepositoryImplementation implements CardsSource {
         TypedArray colors = resources.obtainTypedArray(R.array.colors);//список цветов
 
         for (int i = 0;i< titles.length;i++){
-            dataSource.add(new CardData(titles[i],description[i], colors.getResourceId(i,0),false, Calendar.getInstance().getTime()));
+            dataSource.add(new NoteData(titles[i],description[i], colors.getResourceId(i,0),false, Calendar.getInstance().getTime()));
         }
         return this;
     }
@@ -37,12 +36,12 @@ public class LocalRepositoryImplementation implements CardsSource {
     }
 
     @Override
-    public List<CardData> getAllCardsData() {
+    public List<NoteData> getAllCardsData() {
         return dataSource;
     }
 
     @Override
-    public CardData getCardData(int position) {
+    public NoteData getCardData(int position) {
         return dataSource.get(position);
     }
 
@@ -52,8 +51,8 @@ public class LocalRepositoryImplementation implements CardsSource {
     }
 
     @Override
-    public void addCardData(CardData cardData) {
-        dataSource.add(cardData);
+    public void addCardData(NoteData noteData) {
+        dataSource.add(noteData);
     }
 
     @Override
@@ -62,8 +61,8 @@ public class LocalRepositoryImplementation implements CardsSource {
     }
 
     @Override
-    public void updateCardData(int position, CardData newCardData) {
-        dataSource.set(position, newCardData);
+    public void updateCardData(int position, NoteData newNoteData) {
+        dataSource.set(position, newNoteData);
     }
 
 }

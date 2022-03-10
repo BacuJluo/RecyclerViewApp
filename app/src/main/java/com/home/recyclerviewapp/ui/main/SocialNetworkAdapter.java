@@ -12,12 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.home.recyclerviewapp.R;
-import com.home.recyclerviewapp.repository.CardData;
-import com.home.recyclerviewapp.repository.CardsSource;
+import com.home.recyclerviewapp.repository.NoteData;
+import com.home.recyclerviewapp.repository.NotesSource;
 
 public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdapter.MyViewHolder> {
 
-    private CardsSource cardsSource;
+    private NotesSource notesSource;
 
     OnItemClickListener onItemClickListener;
 
@@ -33,16 +33,16 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(CardsSource cardsSource) {
-        this.cardsSource = cardsSource;
+    public void setData(NotesSource notesSource) {
+        this.notesSource = notesSource;
         notifyDataSetChanged(); //команда адаптеру отрисовать все (абсолютно все) полученные данные
     }
 
     SocialNetworkAdapter() {
 
     }
-    SocialNetworkAdapter(CardsSource cardsSource) {
-        this.cardsSource = cardsSource;
+    SocialNetworkAdapter(NotesSource notesSource) {
+        this.notesSource = notesSource;
     }
     SocialNetworkAdapter(Fragment fragment) {
         this.fragment = fragment;
@@ -56,12 +56,12 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bindContentWithLayout(cardsSource.getCardData(position));
+        holder.bindContentWithLayout(notesSource.getCardData(position));
     }
 
     @Override
     public int getItemCount() {
-        return cardsSource.size();
+        return notesSource.size();
     }
 
     //класс который более нигде не будет использоваться его можно делать внутри другого класса.
@@ -93,7 +93,7 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
 
         }
         //связываем контент с макетом
-        public void bindContentWithLayout(CardData content){
+        public void bindContentWithLayout(NoteData content){
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription()+"\n\n"+content.getDate());
             like.setChecked(content.isLike());

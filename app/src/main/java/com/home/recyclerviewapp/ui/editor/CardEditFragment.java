@@ -14,22 +14,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.home.recyclerviewapp.R;
-import com.home.recyclerviewapp.repository.CardData;
+import com.home.recyclerviewapp.repository.NoteData;
 import com.home.recyclerviewapp.ui.MainActivity;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 
 public class CardEditFragment extends Fragment {
 
-    CardData cardData;
+    NoteData noteData;
 
-    public static CardEditFragment newInstance(CardData cardData) {
+    public static CardEditFragment newInstance(NoteData noteData) {
         CardEditFragment fragment = new CardEditFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("cardData", cardData);
+        bundle.putParcelable("noteData", noteData);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -46,14 +44,14 @@ public class CardEditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null){
-            cardData = getArguments().getParcelable("cardData");
-            ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getTitle());
-            ((EditText)view.findViewById(R.id.inputTitle)).setText(cardData.getDescription());
+            noteData = getArguments().getParcelable("noteData");
+            ((EditText)view.findViewById(R.id.inputTitle)).setText(noteData.getTitle());
+            ((EditText)view.findViewById(R.id.inputTitle)).setText(noteData.getDescription());
 
             //Создаем ДатаПикер
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(cardData.getDate());
-            calendar.setTime(cardData.getDate());
+            calendar.setTime(noteData.getDate());
+            calendar.setTime(noteData.getDate());
             ((DatePicker) view.findViewById(R.id.inputDate)).init(calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH+1),
                     calendar.get(Calendar.DAY_OF_MONTH),
@@ -73,8 +71,8 @@ public class CardEditFragment extends Fragment {
             view.findViewById(R.id.btnSave).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cardData.setTitle(((EditText)view.findViewById(R.id.inputTitle)).getText().toString());
-                    cardData.setDescription(((EditText)view.findViewById(R.id.inputDescription)).getText().toString());
+                    noteData.setTitle(((EditText)view.findViewById(R.id.inputTitle)).getText().toString());
+                    noteData.setDescription(((EditText)view.findViewById(R.id.inputDescription)).getText().toString());
 
 //Старый метод использования DataPicker
 //Задаем год, месяц, день
@@ -85,9 +83,9 @@ public class CardEditFragment extends Fragment {
                         calendar.set(Calendar.DAY_OF_MONTH,datePicker.getDayOfMonth());
                     }
 
-                    cardData.setDate(calendar.getTime());
+                    noteData.setDate(calendar.getTime());
                     //Передаем сообщение Паблишеру что мы изменили карточку
-                    ((MainActivity) requireActivity()).getPublisher().sendMessage(cardData);
+                    ((MainActivity) requireActivity()).getPublisher().sendMessage(noteData);
                     //Закрываем фрагмент менеджер и сохраняем результат
                     requireActivity().getSupportFragmentManager().popBackStack();
                 }
