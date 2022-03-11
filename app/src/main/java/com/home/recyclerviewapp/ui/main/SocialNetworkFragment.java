@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.publisher.Observer;
+import com.home.recyclerviewapp.repository.LocalSharedPreferenceRepositoryImplementation;
 import com.home.recyclerviewapp.repository.NoteData;
 import com.home.recyclerviewapp.repository.NotesSource;
 import com.home.recyclerviewapp.repository.LocalRepositoryImplementation;
@@ -60,8 +61,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
-                data.addCardData(new NoteData("Заголовок новой карточки "+(data.size()+1),
-                        "Описание новой карточки "+(data.size()+1), data.getCardData(socialNetworkAdapter
+                data.addNoteData(new NoteData("Заголовок новой карточки "+(data.size()),
+                        "Описание новой карточки "+data.size(), data.getCardData(socialNetworkAdapter
                         .getMenuPosition()).getColors(), false, Calendar.getInstance().getTime()));
                 socialNetworkAdapter.notifyItemInserted(data.size()-1);
                 recyclerView.smoothScrollToPosition(data.size()-1);
@@ -69,7 +70,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 return true;
             }
             case (R.id.action_clear):{
-                data.clearCardsData();
+                data.clearNotesData();
                 socialNetworkAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -92,10 +93,10 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 //Создаем Колбэк
                 Observer observer = new Observer() {
                     @Override
-                    public void receiveMessage(NoteData cardData) {
+                    public void receiveMessage(NoteData noteData) {
                         ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
-                        cardData.setLike(true);
-                        data.updateCardData(menuPosition,cardData);
+                        noteData.setLike(true);
+                        data.updateNoteData(menuPosition,noteData);
                         socialNetworkAdapter.notifyItemChanged(menuPosition);
                     }
                 };
@@ -105,7 +106,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 return true;
             }
             case (R.id.action_delete):{
-                data.deleteCardData(menuPosition);
+                data.deleteNoteData(menuPosition);
                 socialNetworkAdapter.notifyItemRemoved(menuPosition);
                 return true;
             }
@@ -116,12 +117,36 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initAdapter();
+        //initAdapter();
+        setupSource();
         initRecycler(view);
         setHasOptionsMenu(true);
         initRadioGroup(view);
 
-        Log.d("mylogs","getCurrentSource = "+getCurrentSource());
+        //Log.d("mylogs","getCurrentSource = "+getCurrentSource());
+
+    }
+
+    void setupSource (){
+        switch (getCurrentSource()){
+            case (SOURCE_ARRAY):{
+                //и указываем отображение на кнопке
+                data = new LocalRepositoryImplementation(requireContext().getResources()).init();
+                initAdapter();
+                break;
+            }
+            case (SOURCE_SP):{
+                data = new LocalSharedPreferenceRepositoryImplementation(requireContext()
+                        .getSharedPreferences(LocalSharedPreferenceRepositoryImplementation.KEY_SP_2, Context.MODE_PRIVATE))
+                        .init();
+                initAdapter();
+                break;
+            }
+            case (SOURCE_GF):{
+                //data = new FireStoreImplementation(requireContext().getResources()).init();
+                break;
+            }
+        }
 
     }
 
@@ -174,6 +199,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                     break;
                 }
             }
+            setupSource();
         }
     };
 
@@ -187,27 +213,10 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         return sharedPreferences.getInt(KEY_SP_S1_CELL_C1,SOURCE_ARRAY);
     }
 
-
-
     private void initAdapter() {
+        if(socialNetworkAdapter == null)
         socialNetworkAdapter = new SocialNetworkAdapter(this);
-        switch (getCurrentSource()){
-            case (SOURCE_ARRAY):{
-                //и указываем отображение на кнопке
-                data = new LocalRepositoryImplementation(requireContext().getResources()).init();
-                break;
-            }
-            case (SOURCE_SP):{
-                //data = new LocalSharedPreferenceRepositoryImplementation(requireContext().getResources()).init();
-                break;
-            }
-            case (SOURCE_GF):{
-                //data = new FireStoreImplementation(requireContext().getResources()).init();
-                break;
-            }
-        }
 
-        data = new LocalRepositoryImplementation(requireContext().getResources()).init();
         socialNetworkAdapter.setData(data);
         socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
 

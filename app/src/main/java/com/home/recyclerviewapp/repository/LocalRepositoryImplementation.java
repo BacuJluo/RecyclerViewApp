@@ -36,7 +36,7 @@ public class LocalRepositoryImplementation implements NotesSource {
     }
 
     @Override
-    public List<NoteData> getAllCardsData() {
+    public List<NoteData> getAllNotesData() {
         return dataSource;
     }
 
@@ -46,22 +46,22 @@ public class LocalRepositoryImplementation implements NotesSource {
     }
 
     @Override
-    public void clearCardsData() {
+    public void clearNotesData() {
         dataSource.clear();
     }
 
     @Override
-    public void addCardData(NoteData noteData) {
+    public void addNoteData(NoteData noteData) {
         dataSource.add(noteData);
     }
 
     @Override
-    public void deleteCardData(int position) {
+    public void deleteNoteData(int position) {
         dataSource.remove(position);
     }
 
     @Override
-    public void updateCardData(int position, NoteData newNoteData) {
+    public void updateNoteData(int position, NoteData newNoteData) {
         dataSource.set(position, newNoteData);
     }
 
