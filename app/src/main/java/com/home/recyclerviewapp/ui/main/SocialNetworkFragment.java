@@ -57,16 +57,17 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
-                data.addNoteData(new NoteData("Заголовок новой карточки "+(data.size()),
-                        "Описание новой карточки "+data.size(), data.getCardData(socialNetworkAdapter
-                        .getMenuPosition()).getColors(), false, Calendar.getInstance().getTime()));
-                socialNetworkAdapter.notifyItemInserted(data.size()-1);
-                recyclerView.smoothScrollToPosition(data.size()-1);
-                //recyclerView.scrollToPosition(data.size()-1); //Почему-то не работает(!)
+                data.addNoteData(new NoteData("Заметка"+(data.size()+1),
+                        "Описание заметки", R.color.blue, false, Calendar.getInstance().getTime()));
+                socialNetworkAdapter.notifyItemInserted(data.size());
+                //recyclerView.smoothScrollToPosition(data.size());
+                recyclerView.scrollToPosition(data.size()); //Почему-то не работает(!)
+
                 return true;
             }
             case (R.id.action_clear):{
@@ -95,7 +96,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                     @Override
                     public void receiveMessage(NoteData noteData) {
                         ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
-                        noteData.setLike(true);
+                        //noteData.setLike(true);
                         data.updateNoteData(menuPosition,noteData);
                         socialNetworkAdapter.notifyItemChanged(menuPosition);
                     }
@@ -206,7 +207,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     void setCurrentSource(int currentSource){
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_SP_S1_CELL_C1, currentSource).apply();
+        editor.putInt(KEY_SP_S1_CELL_C1, currentSource);
+        editor.apply();
     }
     int getCurrentSource(){
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(KEY_SP_S1, Context.MODE_PRIVATE);
@@ -214,9 +216,9 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     }
 
     private void initAdapter() {
-        if(socialNetworkAdapter == null)
-        socialNetworkAdapter = new SocialNetworkAdapter(this);
-
+        if(socialNetworkAdapter == null) {
+            socialNetworkAdapter = new SocialNetworkAdapter(this);
+        }
         socialNetworkAdapter.setData(data);
         socialNetworkAdapter.setOnItemClickListener(SocialNetworkFragment.this);
 

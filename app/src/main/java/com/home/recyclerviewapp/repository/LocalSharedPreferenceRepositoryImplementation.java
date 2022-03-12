@@ -55,7 +55,7 @@ public class LocalSharedPreferenceRepositoryImplementation implements NotesSourc
     public void addNoteData(NoteData noteData) {
         dataSource.add(noteData); //карточка будет добавляться в наш массив
         SharedPreferences.Editor editor = sharedPreferences.edit(); //будет сохранятся в SharedPreference
-        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(noteData));
+        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(noteData)).apply();
     }
     @Override
     public void deleteNoteData(int position) {
