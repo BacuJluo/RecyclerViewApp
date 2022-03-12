@@ -32,6 +32,7 @@ import com.home.recyclerviewapp.ui.MainActivity;
 import com.home.recyclerviewapp.ui.editor.CardEditFragment;
 
 import java.util.Calendar;
+import java.util.Random;
 
 public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
 
@@ -57,13 +58,23 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    private static int[] colorIndex = {
+            R.color.blue,
+            R.color.black,
+            R.color.purple_200,
+            R.color.teal_700
+    };
+
+    public int randomColorIndex(){
+        return (new Random()).nextInt(colorIndex.length);
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
                 data.addNoteData(new NoteData("Заметка"+(data.size()+1),
-                        "Описание заметки", R.color.blue, false, Calendar.getInstance().getTime()));
+                        "Описание заметки", randomColorIndex(), false, Calendar.getInstance().getTime()));
                 socialNetworkAdapter.notifyItemInserted(data.size());
                 //recyclerView.smoothScrollToPosition(data.size());
                 recyclerView.scrollToPosition(data.size()); //Почему-то не работает(!)
