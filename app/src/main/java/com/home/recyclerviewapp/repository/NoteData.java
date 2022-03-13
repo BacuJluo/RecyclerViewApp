@@ -11,6 +11,9 @@ import java.util.Date;
 public class NoteData implements Parcelable {
     private String title;
     private String description;
+
+
+
     private int colors;
     private boolean like;
     private Date date;
@@ -78,7 +81,7 @@ public class NoteData implements Parcelable {
     }
 
     public int getColors() {
-        return colors;
+        return this.colors;
     }
 
     public boolean isLike() {

@@ -5,8 +5,10 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.home.recyclerviewapp.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,8 @@ public class LocalSharedPreferenceRepositoryImplementation implements NotesSourc
         String savedNote = sharedPreferences.getString(KEY_CELL_1, null);
         if (savedNote!=null) {
             //работа с библиотекой Json или Gson
-            dataSource.add(new GsonBuilder().create().fromJson(savedNote, NoteData.class));
+            Type type = new TypeToken<ArrayList<NoteData>>(){}.getType();//Получили тип сохраненных данных
+            dataSource = (new GsonBuilder().create().fromJson(savedNote, type)); // Извлечение данных по их типу
         }
         return this;
     }
@@ -49,21 +52,28 @@ public class LocalSharedPreferenceRepositoryImplementation implements NotesSourc
     @Override
     public void clearNotesData() {
         dataSource.clear();
+        saveNoteState();
     }
 
     @Override
     public void addNoteData(NoteData noteData) {
         dataSource.add(noteData); //карточка будет добавляться в наш массив
-        SharedPreferences.Editor editor = sharedPreferences.edit(); //будет сохранятся в SharedPreference
-        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(noteData)).apply();
+        saveNoteState();
     }
     @Override
     public void deleteNoteData(int position) {
         dataSource.remove(position);
+        saveNoteState();
     }
 
     @Override
     public void updateNoteData(int position, NoteData newNoteData) {
         dataSource.set(position, newNoteData);
+        saveNoteState();
+    }
+
+    private void saveNoteState(){
+        SharedPreferences.Editor editor = sharedPreferences.edit(); //будет сохранятся в SharedPreference
+        editor.putString(KEY_CELL_1, new GsonBuilder().create().toJson(dataSource)).apply();//Сохранили полностью данные dataSource
     }
 }

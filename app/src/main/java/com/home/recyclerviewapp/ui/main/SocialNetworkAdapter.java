@@ -1,6 +1,8 @@
 package com.home.recyclerviewapp.ui.main;
 
-
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.repository.NoteData;
 import com.home.recyclerviewapp.repository.NotesSource;
+
+import java.util.Random;
+
 
 public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdapter.MyViewHolder> {
 
@@ -92,12 +97,16 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
             });
 
         }
+
         //связываем контент с макетом
         public void bindContentWithLayout(NoteData content){
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription()+"\n\n"+content.getDate());
             like.setChecked(content.isLike());
-            textViewTitle.setBackgroundResource(content.getColors());
+            //textViewTitle.setBackgroundResource(content.getColors());
+            textViewTitle.setBackgroundTintMode(PorterDuff.Mode.ADD);
+            textViewTitle.setBackgroundColor(fragment.getResources().getColor(content.getColors(),fragment.requireActivity().getTheme()));
+
         }
 
 

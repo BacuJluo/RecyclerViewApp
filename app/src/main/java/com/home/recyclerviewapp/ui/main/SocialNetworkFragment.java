@@ -39,6 +39,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     SocialNetworkAdapter socialNetworkAdapter;
     NotesSource data;
     RecyclerView recyclerView;
+    private Observer observer;
 
     public static SocialNetworkFragment newInstance() {
         SocialNetworkFragment fragment = new SocialNetworkFragment();
@@ -58,27 +59,44 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private static int[] colorIndex = {
-            R.color.blue,
-            R.color.black,
-            R.color.purple_200,
-            R.color.teal_700
-    };
-
-    public int randomColorIndex(){
-        return (new Random()).nextInt(colorIndex.length);
-    }
+    //TODO не работает(!)
+//    private static final int[] colorIndex = {
+//            R.color.blue,
+//            R.color.black,
+//            R.color.purple_200,
+//            R.color.teal_700
+//    };
+//
+//    public int randomColorIndex(){
+//        return (new Random()).nextInt(colorIndex.length-1);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
-                data.addNoteData(new NoteData("Заметка"+(data.size()+1),
-                        "Описание заметки", randomColorIndex(), false, Calendar.getInstance().getTime()));
-                socialNetworkAdapter.notifyItemInserted(data.size());
-                //recyclerView.smoothScrollToPosition(data.size());
-                recyclerView.scrollToPosition(data.size()); //Почему-то не работает(!)
+                /*int menuPosition = socialNetworkAdapter.getMenuPosition();
+                if (data.size()<1){*/
+                    data.addNoteData(new NoteData("Название заметки",
+                            "Описание заметки", R.color.yellow, false, Calendar.getInstance().getTime()));
+                    socialNetworkAdapter.notifyItemInserted(data.size()-1);
+                    //recyclerView.smoothScrollToPosition(data.size());
+                    recyclerView.scrollToPosition(data.size()-1);
+                /*} else {
+                    observer = new Observer() {
+                        @Override
+                        public void receiveMessage(NoteData noteData) {
+                            ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
+                            data.addNoteData(noteData);
+                            socialNetworkAdapter.notifyItemChanged(data.size()-1);
+                            recyclerView.scrollToPosition(data.size() - 1);
+                        }
+                    };
+                    ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                    ((MainActivity) requireActivity()).getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, CardEditFragment.newInstance(data.getCardData(menuPosition))).addToBackStack("").commit();
 
+                }*/
                 return true;
             }
             case (R.id.action_clear):{
@@ -101,7 +119,6 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         int menuPosition = socialNetworkAdapter.getMenuPosition(); //получаем menuPosition из адаптера
         switch (item.getItemId()){
             case (R.id.action_update):{
-
                 //Создаем Колбэк
                 Observer observer = new Observer() {
                     @Override
@@ -244,8 +261,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
 
         //Поверхностная работа с Animator
         DefaultItemAnimator animator = new DefaultItemAnimator();
-        animator.setChangeDuration(5000);
-        animator.setRemoveDuration(5000);
+        animator.setChangeDuration(2000);
+        animator.setRemoveDuration(2000);
         recyclerView.setItemAnimator(animator);
 
     }

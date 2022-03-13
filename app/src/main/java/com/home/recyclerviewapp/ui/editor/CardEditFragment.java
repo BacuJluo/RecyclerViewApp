@@ -46,7 +46,7 @@ public class CardEditFragment extends Fragment {
         if (getArguments() != null){
             noteData = getArguments().getParcelable("noteData");
             ((EditText)view.findViewById(R.id.inputTitle)).setText(noteData.getTitle());
-            ((EditText)view.findViewById(R.id.inputTitle)).setText(noteData.getDescription());
+            ((EditText)view.findViewById(R.id.inputDescription)).setText(noteData.getDescription());
 
             //Создаем ДатаПикер
             Calendar calendar = Calendar.getInstance();
