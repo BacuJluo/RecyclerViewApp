@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.home.recyclerviewapp.R;
 import com.home.recyclerviewapp.publisher.Observer;
+import com.home.recyclerviewapp.repository.ColorIndexConverter;
+import com.home.recyclerviewapp.repository.FireStoreImplementation;
+import com.home.recyclerviewapp.repository.FireStoreResponse;
 import com.home.recyclerviewapp.repository.LocalSharedPreferenceRepositoryImplementation;
 import com.home.recyclerviewapp.repository.NoteData;
 import com.home.recyclerviewapp.repository.NotesSource;
@@ -34,7 +37,7 @@ import com.home.recyclerviewapp.ui.editor.CardEditFragment;
 import java.util.Calendar;
 import java.util.Random;
 
-public class SocialNetworkFragment extends Fragment implements OnItemClickListener {
+public class SocialNetworkFragment extends Fragment implements OnItemClickListener, FireStoreResponse {
 
     SocialNetworkAdapter socialNetworkAdapter;
     NotesSource data;
@@ -59,30 +62,11 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    //TODO не работает(!)
-//    private static final int[] colorIndex = {
-//            R.color.blue,
-//            R.color.black,
-//            R.color.purple_200,
-//            R.color.teal_700
-//    };
-//
-//    public int randomColorIndex(){
-//        return (new Random()).nextInt(colorIndex.length-1);
-//    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case (R.id.action_add):{
-                /*int menuPosition = socialNetworkAdapter.getMenuPosition();
-                if (data.size()<1){*/
-                    data.addNoteData(new NoteData("Название заметки",
-                            "Описание заметки", R.color.yellow, false, Calendar.getInstance().getTime()));
-                    socialNetworkAdapter.notifyItemInserted(data.size()-1);
-                    //recyclerView.smoothScrollToPosition(data.size());
-                    recyclerView.scrollToPosition(data.size()-1);
-                /*} else {
+
                     observer = new Observer() {
                         @Override
                         public void receiveMessage(NoteData noteData) {
@@ -93,10 +77,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                         }
                     };
                     ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
-                    ((MainActivity) requireActivity()).getSupportFragmentManager().beginTransaction()
-                            .add(R.id.container, CardEditFragment.newInstance(data.getCardData(menuPosition))).addToBackStack("").commit();
-
-                }*/
+                    ((MainActivity) requireActivity()).getNavigation().addFragment(CardEditFragment.newInstance(new NoteData("","",ColorIndexConverter.getColorByIndex(ColorIndexConverter.randomColorIndex()),false,Calendar.getInstance().getTime())),true);
                 return true;
             }
             case (R.id.action_clear):{
@@ -130,8 +111,7 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                     }
                 };
                 ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
-                ((MainActivity) requireActivity()).getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, CardEditFragment.newInstance(data.getCardData(menuPosition))).addToBackStack("").commit();
+                ((MainActivity) requireActivity()).getNavigation().addFragment(CardEditFragment.newInstance(data.getCardData(menuPosition)), true);
                 return true;
             }
             case (R.id.action_delete):{
@@ -172,7 +152,13 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
                 break;
             }
             case (SOURCE_GF):{
-                //data = new FireStoreImplementation(requireContext().getResources()).init();
+                data = new FireStoreImplementation().init(new FireStoreResponse() {
+                    @Override
+                    public void initialized(NotesSource notesSource) {
+                        initAdapter();
+                    }
+                });
+                initAdapter();
                 break;
             }
         }
@@ -279,4 +265,8 @@ public class SocialNetworkFragment extends Fragment implements OnItemClickListen
     }
 
 
+    @Override
+    public void initialized(NotesSource notesSource) {
+        initAdapter();
+    }
 }

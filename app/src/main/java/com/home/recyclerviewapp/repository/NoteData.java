@@ -9,11 +9,19 @@ import java.util.Date;
 
 //Добавили парселизацию и Date
 public class NoteData implements Parcelable {
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String title;
     private String description;
-
-
-
     private int colors;
     private boolean like;
     private Date date;

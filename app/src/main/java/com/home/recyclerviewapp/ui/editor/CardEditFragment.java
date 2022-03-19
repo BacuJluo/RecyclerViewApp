@@ -23,6 +23,7 @@ import java.util.Calendar;
 public class CardEditFragment extends Fragment {
 
     NoteData noteData;
+    Calendar calendar;
 
     public static CardEditFragment newInstance(NoteData noteData) {
         CardEditFragment fragment = new CardEditFragment();
@@ -49,8 +50,7 @@ public class CardEditFragment extends Fragment {
             ((EditText)view.findViewById(R.id.inputDescription)).setText(noteData.getDescription());
 
             //Создаем ДатаПикер
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(noteData.getDate());
+            calendar = Calendar.getInstance();
             calendar.setTime(noteData.getDate());
             ((DatePicker) view.findViewById(R.id.inputDate)).init(calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH+1),

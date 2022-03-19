@@ -44,8 +44,8 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
     }
 
     SocialNetworkAdapter() {
-
     }
+
     SocialNetworkAdapter(NotesSource notesSource) {
         this.notesSource = notesSource;
     }
@@ -90,12 +90,11 @@ public class SocialNetworkAdapter extends RecyclerView.Adapter<SocialNetworkAdap
                 public boolean onLongClick(View v) {
                     menuPosition = getLayoutPosition();
                     v.showContextMenu(); //для отображения как контекстное Меню. И ставим значение true для отображения
-                    return true;
+                    return false;
             //по умолчанию идет True..
             //когда выбираем клик по itemView нужно заменять на false..
                 }
             });
-
         }
 
         //связываем контент с макетом
