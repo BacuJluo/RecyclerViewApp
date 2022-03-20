@@ -42,10 +42,10 @@ public class NoteDataMapping {
         //Переводим NoteData в документ
         Map<String, Object> answer = new HashMap<>(); //создаем документ с помощью Map
         answer.put(Fields.TITLE, noteData.getTitle()); //загружаем (Ключ, Значение)
-        answer.put(Fields.DESCRIPTION, noteData.getTitle());
-        answer.put(Fields.COLOR, noteData.getTitle());
-        answer.put(Fields.LIKE, noteData.getTitle());
-        answer.put(Fields.DATE, noteData.getTitle());
+        answer.put(Fields.DESCRIPTION, noteData.getDescription());
+        answer.put(Fields.COLOR, ColorIndexConverter.getIndexByColor(noteData.getColors()));
+        answer.put(Fields.LIKE, noteData.isLike());
+        answer.put(Fields.DATE, noteData.getDate());
         return answer;
     }
 
